@@ -45,11 +45,10 @@ public class CustomerController {
 	@PutMapping("/update")
 	public CustomerDetails update(@RequestBody UpdateCustomerRequest requestData)
 	{
-		Customer customer = service.register(new Customer(requestData.getFirstName(), requestData.getLastName()));
-		//customer.setId(requestData.getId());
+		Customer customer = new Customer(requestData.getFirstName(), requestData.getLastName());
+		customer.setId(requestData.getId());
 		customer = service.update(customer);
 		return customerUtil.toDetails(customer);
-
 	}
 	
 	@GetMapping("/get/id/{id}")

@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements ICustomerService{
 	public Customer findById(Long id) {
 		Optional<Customer> optional = dao.findById(id);
 		if(!optional.isPresent())
-			throw new CustomerNotFoundException("customer not found for id="+id);
+			throw new CustomerNotFoundException("Can't find, customer not found for id="+id);
 		return optional.get();
 	}
 
@@ -47,8 +47,11 @@ public class CustomerServiceImpl implements ICustomerService{
 
 	@Override
 	public Customer update(Customer customer) {
-		Customer customer1 = dao.save(customer);
-		return customer1;
+		boolean exists=customer.getId()!=null && dao.existsById(customer.getId());
+        if(!exists){
+         throw new CustomerNotFoundException("Can't update, customer not found for id="+customer.getId());
+        }
+		return dao.save(customer);
 	}
 
 }
